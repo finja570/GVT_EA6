@@ -1,0 +1,81 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Einsendeaufgabe 6: Objekte bewegen - fliegende Kugeln</title>
+		<link rel="stylesheet" href="style.css">
+
+		<script src="ext/gl-matrix.js"></script>
+		<script src="GVT_Src_vertexData_sphere.js"></script>
+		<script src="GVT_Src_vertexData_torus.js"></script>
+		<script src="GVT_Src_vertexData_plane.js"></script>
+		<script src="TFM_Src_tpl.js"></script>
+
+		<script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+
+			varying vec4 vColor;
+			uniform vec4 uColor;
+
+			void main(){
+			gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+
+			vColor = vec4(aNormal.z, aNormal.z, aNormal.z, 1.0);
+			vColor = uColor * (vColor + 1.0) / 2.0;
+			}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+			gl_FragColor = vColor;
+			}
+		</script>
+	</head>
+	<body onload="app.start()">
+		<h1>Einsendeaufgabe 6: Objekte bewegen - fliegende Kugeln</h1>
+
+		<canvas id="canvas" width="800" height="500"></canvas>
+
+		<h2> Interaktionen: </h2>
+		<table>
+			<tr>
+			  <th>Taste</th>
+			  <th>Aktion</th>
+			</tr>
+			<tr>
+				<th>K</th>
+				<th>Start/Stop der Animation</th>
+			</tr>
+			<tr>
+				<th>P,F,O</th>
+				<th>Veränderung der Projektion (perspective, frustum, ortho)</th>
+			</tr>
+			<tr>
+				<th>C/Shift-C</th>
+				<th>Bewegung der Kamera um die Y-Achse</th>
+			</tr>
+			<tr>
+				<th>H/Shift-H</th>
+				<th>Bewegung der Kamera nach oben/unten</th>
+			</tr>
+			<tr>
+				<th>D/Shift-D</th>
+				<th>Bewegung der Kamera von der Mitte weg/zur Mitte hin</th>
+			</tr>
+			<tr>
+				<th>V/Shift-V</th>
+				<th>Bewegung der Kamera im Bogenmaß (nur in folgender Projektionen möglich: perspective)</th>
+			</tr>
+			<tr>
+				<th>B/Shift-B</th>
+				<th>Abmessungen der kameranahen Ebene (nur in folgenden Projektionen möglich: frustum, ortho)</th>
+			</tr>
+		</table>	
+	</body>
+</html>
